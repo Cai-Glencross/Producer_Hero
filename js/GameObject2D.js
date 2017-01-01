@@ -66,7 +66,7 @@ GameObject2D.prototype.draw = function(){
   this.mesh.draw(); 
 };
 
-
+//decremented
 GameObject2D.prototype.Lamedraw = function(camera){ 
 
   if (this.parent == null){
@@ -109,3 +109,4 @@ GameObject2D.prototype.move = function(dt){
 
   this.updateEdges();
 }
+

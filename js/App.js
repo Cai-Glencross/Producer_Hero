@@ -8,23 +8,8 @@ var App = function(canvas) {
 	this.clicked = false;
 	this.mouseX  = 0;
 	this.mouseY = 0;
-	//keys pressed
-	document.onkeydown= function(event){
-		app.keysPressed[keyboardMap[event.keyCode]]=true;
-	}
-	document.onkeyup = function(event){
-		app.keysPressed[keyboardMap[event.keyCode]]=false;
-	}
 
-	document.onmousedown = function(event){
-		app.clicked = true;
-		app.mouseX = (event.clientX-canvas.width/2)/(canvas.width/2);
-		app.mouseY = (-event.clientY+canvas.height/2)/(canvas.height/2);
-	}
 
-	document.onmouseup = function(event){
-		app.clicked = false
-	}
 
 	// set a pointer to our canvas
 	this.canvas = canvas;

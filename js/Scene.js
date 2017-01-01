@@ -35,8 +35,8 @@ var Scene = function(gl, output) {
   this.metronomeMesh = new Mesh(this.quadGeometry, this.metronomeMaterial);
 
   this.metronome = new GameObject2D(this.metronomeMesh);
-  this.metronome.scale = new Vec3(.025,.5,1);
-  this.metronome.position = new Vec3(0,0.5,0);
+  this.metronome.scale = new Vec3(.45,.025,1);
+  this.metronome.position = new Vec3(0.45,0,0);
   this.metronome.updateModelTransformation(); 
 
   this.gameObjects.push(this.metronome);
@@ -46,11 +46,13 @@ var Scene = function(gl, output) {
   this.trackTexture = new Texture2D(gl, "js/res/track_circle.png");
   this.trackMaterial.colorTexture.set(this.trackTexture);
   this.trackMesh = new Mesh(this.quadGeometry, this.trackMaterial);
-
-  this.Track0 = new Track(this.trackMesh, []);
+  this.trackArray = [];
+  this.Track0 = new Track(this.trackMesh, this.gl);
   this.Track0.position = new Vec3(0,0,0);
-  this.Track0.scale = new Vec3(1,1,0);
+  this.Track0.scale = new Vec3(.9,.9,0);
   this.Track0.updateModelTransformation();
+  this.Track0.initializeSlots(this.Track0.numSlots);
+  this.trackArray.push(this.Track0);
 
   //best architecture should be to add slot objects to a track object, and have
   //the track object handle where on the track each slot should be put, maybe
@@ -71,15 +73,19 @@ var Scene = function(gl, output) {
  
  };
 
+ Scene.prototype.checkSoundSlots = function(){
+  for (var i = 0; i < this.trackArray.length; i++) {
+    this.trackArray[i].checkSoundSlots(this.metronome.orientation % (Math.PI*2));
+  };
+ }
 
 
-
-
-
-
-
-
-
+document.onmousedown = function(event){
+    var mouseX = (event.clientX-canvas.width/2)/(canvas.width/2);
+    var mouseY = (-event.clientY+canvas.height/2)/(canvas.height/2);
+    //console.log("mouse dwn event called");
+    app.scene.Track0.checkSlotClicks(mouseX,mouseY);
+  }
 
 
 Scene.prototype.update = function(gl, keysPressed, clicked, mouseX,mouseY) {
@@ -95,7 +101,10 @@ Scene.prototype.update = function(gl, keysPressed, clicked, mouseX,mouseY) {
 
    this.metronome.orbit(new Vec3(0,0,0), -.8*dt);
    this.centerTest.draw();
-   this.Track0.draw();
+   this.Track0.drawTrack();
+
+   //console.log("metronome's theta: " + this.metronome.orientation);
+   this.checkSoundSlots();
    //draw the game objects
   for (var i = this.gameObjects.length - 1; i >= 0; i--) {
    	this.gameObjects[i].draw();
