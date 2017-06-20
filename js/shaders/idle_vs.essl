@@ -1,0 +1,18 @@
+shaderSource[document.currentScript.src.split('js/shaders/')[1]] = `
+	uniform vec3 quadPosition;
+	uniform mat4 modelViewProjMatrix;
+	attribute vec3 vertexPosition;
+	attribute vec2 vertexTexCoord;
+	attribute vec3 vertexNormal;
+	attribute vec3 vertexColor;
+	varying vec3 color;
+	varying vec2 texCoord;
+
+	  	  
+	void main(void) {
+		gl_Position = vec4(vertexPosition, 1)*modelViewProjMatrix;
+		color=vertexColor;
+		texCoord=vertexTexCoord;
+	}
+
+`;
