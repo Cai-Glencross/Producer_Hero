@@ -41,7 +41,27 @@ GameObject2D.prototype.updateModelTransformation = function(){
 
 };
 
-GameObject2D.prototype.HUDdraw = function(){ 
+GameObject2D.prototype.orbit = function(point,angle){
+  var rotationMatrix = new Mat4().set().rotate(angle);
+  var differenceVector = point.minus(this.position);
+  var radius = differenceVector.length();
+  var direction = differenceVector.direction();
+  direction.xyz1mul(rotationMatrix);
+
+  console.log("this position before moving to origin: "+this.position.x);
+  this.position.add(differenceVector);
+  console.log("this position after moving to origin: "+this.position.x);
+  this.position.sub(direction.mul(radius));
+  console.log("this position after moving back out "+this.position.x);
+  this.orientation+=angle;
+
+  this.updateModelTransformation();
+
+
+
+}
+
+GameObject2D.prototype.draw = function(){ 
 
   Material.shared.modelViewProjMatrix.set(). 
     mul(this.modelMatrix);
@@ -50,7 +70,7 @@ GameObject2D.prototype.HUDdraw = function(){
 };
 
 
-GameObject2D.prototype.draw = function(camera){ 
+GameObject2D.prototype.Lamedraw = function(camera){ 
 
   if (this.parent == null){
     Material.shared.modelViewProjMatrix.set(). 

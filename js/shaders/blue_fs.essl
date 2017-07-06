@@ -6,7 +6,7 @@ shaderSource[document.currentScript.src.split('js/shaders/')[1]] = `
 
 	void main(void) {
 
-		gl_FragColor = texture2D(colorTexture, texCoord);
+		gl_FragColor = vec4(1,1,1,1);
 
 	}
 `;
