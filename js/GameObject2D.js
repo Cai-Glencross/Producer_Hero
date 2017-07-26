@@ -48,11 +48,8 @@ GameObject2D.prototype.orbit = function(point,angle){
   var direction = differenceVector.direction();
   direction.xyz1mul(rotationMatrix);
 
-  console.log("this position before moving to origin: "+this.position.x);
   this.position.add(differenceVector);
-  console.log("this position after moving to origin: "+this.position.x);
   this.position.sub(direction.mul(radius));
-  console.log("this position after moving back out "+this.position.x);
   this.orientation+=angle;
 
   this.updateModelTransformation();

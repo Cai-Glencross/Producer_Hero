@@ -16,18 +16,21 @@ var Scene = function(gl, output) {
 
 
   // shader/program set ups
-  this.vsTrafo2d = new Shader(gl, gl.VERTEX_SHADER, "idle_vs.essl");
-  this.fsSolid = new Shader(gl, gl.FRAGMENT_SHADER, "blue_fs.essl"); 
-  this.drumCircleProgram = new Program(gl, this.vsTrafo2d, this.fsSolid);
+  this.vsGeneral = new Shader(gl, gl.VERTEX_SHADER, "idle_vs.essl");
+  this.fsSolid = new Shader(gl, gl.FRAGMENT_SHADER, "white_fs.essl"); 
+  this.drumCircleProgram = new Program(gl, this.vsGeneral, this.fsSolid);
 
   this.fsAnimation = new Shader(gl, gl.FRAGMENT_SHADER, "animation_fs.essl");
-  this.animationProgram = new Program(gl, this.vsTrafo2d, this.fsAnimation);
+  this.animationProgram = new Program(gl, this.vsGeneral, this.fsAnimation);
 
-
+  this.fsTexture = new Shader(gl, gl.FRAGMENT_SHADER, "texture_fs.essl");
+  this.textureProgram = new Program(gl, this.vsGeneral, this.fsTexture);
 
 
 
   //Game object set ups
+
+  //metronome set-up
   this.metronomeMaterial = new Material(gl, this.drumCircleProgram);
   this.metronomeMesh = new Mesh(this.quadGeometry, this.metronomeMaterial);
 
@@ -37,6 +40,16 @@ var Scene = function(gl, output) {
   this.metronome.updateModelTransformation(); 
 
   this.gameObjects.push(this.metronome);
+
+  //initialize outer track array
+  this.trackMaterial = new Material(gl, this.textureProgram);
+  this.trackTexture = new Texture2D(gl, "js/res/track.png");
+  this.trackMaterial.colorTexture.set(this.trackTexture);
+  this.trackMesh = new Mesh(this.quadGeometry, this.trackMaterial);
+
+  this.Track0 = new Track(this.trackMesh, []);
+
+
 
 
 
@@ -67,10 +80,13 @@ Scene.prototype.update = function(gl, keysPressed, clicked, mouseX,mouseY) {
 
    this.metronome.orbit(new Vec3(0,0,0), -.8*dt);
 
+   this.Track0.draw();
    //draw the game objects
   for (var i = this.gameObjects.length - 1; i >= 0; i--) {
    	this.gameObjects[i].draw();
    };
+
+
 
 
     
