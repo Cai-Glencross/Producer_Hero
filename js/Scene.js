@@ -35,7 +35,7 @@ var Scene = function(gl, output) {
   this.metronomeMesh = new Mesh(this.quadGeometry, this.metronomeMaterial);
 
   this.metronome = new GameObject2D(this.metronomeMesh);
-  this.metronome.scale = new Vec3(.025,.4,1);
+  this.metronome.scale = new Vec3(.025,.5,1);
   this.metronome.position = new Vec3(0,0.5,0);
   this.metronome.updateModelTransformation(); 
 
@@ -43,14 +43,29 @@ var Scene = function(gl, output) {
 
   //initialize outer track array
   this.trackMaterial = new Material(gl, this.textureProgram);
-  this.trackTexture = new Texture2D(gl, "js/res/track.png");
+  this.trackTexture = new Texture2D(gl, "js/res/track_circle.png");
   this.trackMaterial.colorTexture.set(this.trackTexture);
   this.trackMesh = new Mesh(this.quadGeometry, this.trackMaterial);
 
   this.Track0 = new Track(this.trackMesh, []);
+  this.Track0.position = new Vec3(0,0,0);
+  this.Track0.scale = new Vec3(1,1,0);
+  this.Track0.updateModelTransformation();
+
+  //best architecture should be to add slot objects to a track object, and have
+  //the track object handle where on the track each slot should be put, maybe
+  //have like a fill function, or initialize it with a certain number of slots
+  //then each slot can have its own checks to see if its clicked called by some 
+  //click checker for the track object... let's make this ish clean ;)
 
 
+  this.centerTestMaterial = new Material(gl, this.drumCircleProgram);
+  this.centerTestMesh = new Mesh(this.quadGeometry, this.centerTestMaterial);
 
+  this.centerTest = new GameObject2D(this.centerTestMesh);
+  this.centerTest.position = new Vec3(0,0,0);
+  this.centerTest.scale = new Vec3(.01,.01,1);
+  this.centerTest.updateModelTransformation();
 
 
  
@@ -79,7 +94,7 @@ Scene.prototype.update = function(gl, keysPressed, clicked, mouseX,mouseY) {
 
 
    this.metronome.orbit(new Vec3(0,0,0), -.8*dt);
-
+   this.centerTest.draw();
    this.Track0.draw();
    //draw the game objects
   for (var i = this.gameObjects.length - 1; i >= 0; i--) {
