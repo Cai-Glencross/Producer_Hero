@@ -12,7 +12,7 @@ var Track = function(mesh, gl){
 	//default value is eight for eighth notes
 	//might should change to some fraction of measures so measure can be customizable
 	this.numSlots = 8;
-
+	this.soundPath = "js/res/HiHat.wav";
 	//this.initializeSlots(this.numSlots);
 
 };
@@ -41,6 +41,8 @@ Track.prototype.initializeSlots = function(numSlots){
 		//maybe multiply beforehand?
 		slot.updateModelTransformation();
 		slot.modelMatrix.mul(this.modelMatrix);
+		//slot.soundPath = this.soundPath;
+		slot.setSoundPath(this.soundPath);
 
 		//add it to the global Array of slot objects
 

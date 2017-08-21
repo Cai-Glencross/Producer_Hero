@@ -12,11 +12,23 @@ var Slot = function(mesh, track){
 	this.hasBeenPlayed = false;
 
 	this.isOn = false;
+
+	this.soundPath = "js/res/HiHat.wav";
+	this.setSoundPath(this.soundPath);
+	this.soundIndex = 0;
 };
 
 Slot.prototype = Object.create(GameObject2D.prototype);
 
 Slot.prototype.constructor = Track;
+
+Slot.prototype.setSoundPath = function(soundPath){
+	this.soundPath = soundPath;
+	this.sounds = [];
+	for (var i = 0; i < 10; i++) {
+		this.sounds.push(new Audio(soundPath));
+	}
+}
 
 Slot.prototype.setOnTexture = function(onTexture){
 	this.onTexture = onTexture;
@@ -68,18 +80,25 @@ if(this.isOn){
 
 
 Slot.prototype.checkSoundSlot = function(metroTheta){
-	var buffer = 0.01;
+	var buffer = 0.1;
 	var theta = Math.PI*2 + metroTheta;
 	//console.log("metronome orientation: "+theta+"slot orientation: "+this.theta);
 	if(theta >= this.theta-buffer && theta <=this.theta+buffer){
-		//var index = this.track.trackArray.indexOf(this);
-		//this.track.trackArray[index - 1].hasBeenPlayed = false; 
+		var index = this.track.trackArray.indexOf(this);
+		console.log("index of slot hit is: "+ index);
+		if(index == 0){
+			index = this.track.trackArray.length;
+		}
+		this.track.trackArray[index - 1].hasBeenPlayed = false; 
 		console.log("metronome hit a slot");
-		if(this.isOn){
+		if(this.isOn && this.hasBeenPlayed == false){
 			//console.log("!!!METRONOME HIT AN ACTIVESLOT!!!");
 			this.hasBeenPlayed = true;
-			this.sound = new Audio("js/res/HiHat.wav");
-			this.sound.play();
+			this.sounds[this.soundIndex].play();
+			this.soundIndex++;
+			if(this.soundIndex>this.sounds.length - 1){
+				this.soundIndex = 0;
+			}
 		}
 	}
 }

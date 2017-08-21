@@ -51,16 +51,26 @@ var Scene = function(gl, output) {
   this.Track0.position = new Vec3(0,0,0);
   this.Track0.scale = new Vec3(.9,.9,0);
   this.Track0.updateModelTransformation();
+  this.Track0.numSlots = 16;
   this.Track0.initializeSlots(this.Track0.numSlots);
   this.trackArray.push(this.Track0);
 
 
   this.Track1 = new Track(this.trackMesh, this.gl);
   this.Track1.position = new Vec3(0,0,0);
-  this.Track1.scale = new Vec3(.7,.7,0);
+  this.Track1.scale = new Vec3(.6,.6,0);
   this.Track1.updateModelTransformation();
+  this.Track1.soundPath = "js/res/Snare.wav";
   this.Track1.initializeSlots(this.Track1.numSlots);
   this.trackArray.push(this.Track1);
+
+  this.Track2 = new Track(this.trackMesh, this.gl);
+  this.Track2.position = new Vec3(0,0,0);
+  this.Track2.scale = new Vec3(.3,.3,0);
+  this.Track2.updateModelTransformation();
+  this.Track2.soundPath = "js/res/Bass-Drum-1.wav";
+  this.Track2.initializeSlots(this.Track2.numSlots);
+  this.trackArray.push(this.Track2);
 
   //best architecture should be to add slot objects to a track object, and have
   //the track object handle where on the track each slot should be put, maybe
@@ -111,7 +121,7 @@ Scene.prototype.update = function(gl, keysPressed, clicked, mouseX,mouseY) {
    this.timeAtLastFrame = timeAtThisFrame;
 
 
-   this.metronome.orbit(new Vec3(0,0,0), -.8*dt);
+   this.metronome.orbit(new Vec3(0,0,0), -2*dt);
    this.centerTest.draw();
    //this.Track0.drawTrack();
 
