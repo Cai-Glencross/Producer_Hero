@@ -54,6 +54,14 @@ var Scene = function(gl, output) {
   this.Track0.initializeSlots(this.Track0.numSlots);
   this.trackArray.push(this.Track0);
 
+
+  this.Track1 = new Track(this.trackMesh, this.gl);
+  this.Track1.position = new Vec3(0,0,0);
+  this.Track1.scale = new Vec3(.7,.7,0);
+  this.Track1.updateModelTransformation();
+  this.Track1.initializeSlots(this.Track1.numSlots);
+  this.trackArray.push(this.Track1);
+
   //best architecture should be to add slot objects to a track object, and have
   //the track object handle where on the track each slot should be put, maybe
   //have like a fill function, or initialize it with a certain number of slots
@@ -84,7 +92,11 @@ document.onmousedown = function(event){
     var mouseX = (event.clientX-canvas.width/2)/(canvas.width/2);
     var mouseY = (-event.clientY+canvas.height/2)/(canvas.height/2);
     //console.log("mouse dwn event called");
-    app.scene.Track0.checkSlotClicks(mouseX,mouseY);
+    //app.scene.Track0.checkSlotClicks(mouseX,mouseY);
+    for (var i = 0; i < app.scene.trackArray.length; i++) {
+   		app.scene.trackArray[i].checkSlotClicks(mouseX,mouseY);
+   }
+
   }
 
 
@@ -101,7 +113,11 @@ Scene.prototype.update = function(gl, keysPressed, clicked, mouseX,mouseY) {
 
    this.metronome.orbit(new Vec3(0,0,0), -.8*dt);
    this.centerTest.draw();
-   this.Track0.drawTrack();
+   //this.Track0.drawTrack();
+
+   for (var i = 0; i < this.trackArray.length; i++) {
+   	this.trackArray[i].drawTrack();
+   }
 
    //console.log("metronome's theta: " + this.metronome.orientation);
    this.checkSoundSlots();

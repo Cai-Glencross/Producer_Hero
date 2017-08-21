@@ -72,10 +72,10 @@ Slot.prototype.checkSoundSlot = function(metroTheta){
 	var theta = Math.PI*2 + metroTheta;
 	//console.log("metronome orientation: "+theta+"slot orientation: "+this.theta);
 	if(theta >= this.theta-buffer && theta <=this.theta+buffer){
-		var index = this.track.trackArray.findIndex(this);
-		this.track.trackArray[index - 1].hasBeenPlayed = false; 
+		//var index = this.track.trackArray.indexOf(this);
+		//this.track.trackArray[index - 1].hasBeenPlayed = false; 
 		console.log("metronome hit a slot");
-		if(this.isOn && this.hasBeenPlayed==false){
+		if(this.isOn){
 			//console.log("!!!METRONOME HIT AN ACTIVESLOT!!!");
 			this.hasBeenPlayed = true;
 			this.sound = new Audio("js/res/HiHat.wav");
